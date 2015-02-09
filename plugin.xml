@@ -24,6 +24,6 @@
         <source-file src="src/ios/HelloWorldPlugin.m" target-dir="src/ios" />
     </platform> -->
     <platform name="android">
-        <source-file src="src/android/hobnobGeolocation.java" target-dir="src/in/hobnob" />        
+        <source-file src="www/src/android/hobnobGeolocation.java" target-dir="src/in/hobnob" />        
     </platform>
 </plugin>
