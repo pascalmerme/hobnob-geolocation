@@ -17,13 +17,11 @@ import android.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
-import java.util.UUID;
-
-
 /**
  * This class echoes a string called from JavaScript.
  */
 public class HobnobGeolocation extends CordovaPlugin {
+    private static final String TAG = "HobnobGeolocation";
 
     private boolean currentlyTracking;
     private String userId;
@@ -69,12 +67,12 @@ public class HobnobGeolocation extends CordovaPlugin {
         }
 
         if (action.equals("isTracking")) {
-            callbackContext.success(currentlyTracking);
+            callbackContext.success(currentlyTracking ? 1 : 0);
         }
         return false;
     }
 
-    private void startAlarmManager(Context context) {
+    private void startAlarmManager() {
         Log.d(TAG, "startAlarmManager");
         Context context = getBaseContext();
         alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);

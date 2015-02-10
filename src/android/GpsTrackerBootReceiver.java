@@ -10,6 +10,7 @@ import android.os.SystemClock;
 
 public class GpsTrackerBootReceiver extends BroadcastReceiver {
     private static final String TAG = "GpsTrackerBootReceiver";
+    
     @Override
     public void onReceive(Context context, Intent intent) {
         AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
