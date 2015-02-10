@@ -11,6 +11,7 @@
         <engine name="cordova" version=">=3.5.0" />
     </engines>
     <dependency id="android.support.v4" url="https://github.com/MobileChromeApps/cordova-plugin-android-support-v4.git" />
+    <dependency id="com.google.playservices" url="https://github.com/MobileChromeApps/google-play-services.git" />
 
     <js-module src="www/hobnobGeolocation.js" name="hobnobGeolocation">
         <clobbers target="hobnob.geolocation" />
