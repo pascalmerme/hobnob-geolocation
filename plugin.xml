@@ -29,6 +29,21 @@
                 <param name="android-package" value="in.hobnob.HobnobGeolocation"/>
             </feature>
         </config-file>
-        <source-file src="src/android/HobnobGeolocation.java" target-dir="src/in/hobnob" />        
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.WAKE_LOCK" />
+            <receiver android:name=".GpsTrackerBootReceiver">
+                <intent-filter>
+                    <action android:name="android.intent.action.BOOT_COMPLETED" />
+                </intent-filter>
+            </receiver>
+            <receiver android:name=".GpsTrackerAlarmReceiver">
+            </receiver>
+            <service android:name=".LocationService">
+            </service>
+        </config-file>
+        <source-file src="src/android/HobnobGeolocation.java" target-dir="src/in/hobnob" />
+        <source-file src="src/android/GpsTrackerAlarmReceiver.java" target-dir="src/in/hobnob" />
+        <source-file src="src/android/GpsTrackerBootReceiver.java" target-dir="src/in/hobnob" /> 
+        <source-file src="src/android/LocationService.java" target-dir="src/in/hobnob" /> 
     </platform>
 </plugin>
