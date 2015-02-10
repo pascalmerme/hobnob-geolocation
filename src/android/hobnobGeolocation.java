@@ -33,7 +33,7 @@ public class HobnobGeolocation extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        Log.d(TAG, "execute");
+
         Context context = cordova.getActivity();
         SharedPreferences sharedPreferences = context.getSharedPreferences("in.hobnob.prefs", Context.MODE_PRIVATE);
         currentlyTracking = sharedPreferences.getBoolean("currentlyTracking", false);
@@ -43,7 +43,6 @@ public class HobnobGeolocation extends CordovaPlugin {
         defaultUploadWebsite = args.getString(2);
 
         if (action.equals("start")) {
-            Log.d(TAG, "start action");
 
             // Set currentlyTracking to true
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -53,11 +52,7 @@ public class HobnobGeolocation extends CordovaPlugin {
             editor.putString("defaultUploadWebsite", defaultUploadWebsite);
             editor.apply();
 
-            Log.d(TAG, "preferences set");
-
             startTracking();
-
-            Log.d(TAG, "started tracking");
 
             return true;
         }
@@ -86,10 +81,11 @@ public class HobnobGeolocation extends CordovaPlugin {
         alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         gpsTrackerIntent = new Intent(context, GpsTrackerAlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(context, 0, gpsTrackerIntent, 0);
-
+        Log.d(TAG, "will fetch preferences");
         SharedPreferences sharedPreferences = context.getSharedPreferences("in.hobnob.prefs", Context.MODE_PRIVATE);
         repeatDelayInMinutes = sharedPreferences.getInt("repeatDelayInMinutes", 15);
-     
+        Log.d(TAG, "preferences");
+        Log.d(TAG, repeatDelayInMinutes);
         alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
             SystemClock.elapsedRealtime(),
             repeatDelayInMinutes * 60 * 1000,

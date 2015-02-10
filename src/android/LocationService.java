@@ -42,11 +42,13 @@ public class LocationService extends Service implements
 
     @Override
     public void onCreate() {
+        Log.d(TAG, "onCreate");
         super.onCreate();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(TAG, "onStartCommand");
         // if we are currently trying to get a location and the alarm manager has called this again,
         // no need to start processing a new location.
         if (!currentlyProcessingLocation) {
