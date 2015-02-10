@@ -10,6 +10,8 @@
     <engines>
         <engine name="cordova" version=">=3.5.0" />
     </engines>
+    <dependency id="android.support.v4" url="https://github.com/MobileChromeApps/cordova-plugin-android-support-v4.git" />
+
     <js-module src="www/hobnobGeolocation.js" name="hobnobGeolocation">
         <clobbers target="hobnob.geolocation" />
     </js-module>
