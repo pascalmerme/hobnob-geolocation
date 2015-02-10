@@ -83,7 +83,7 @@ public class HobnobGeolocation extends CordovaPlugin {
         pendingIntent = PendingIntent.getBroadcast(context, 0, gpsTrackerIntent, 0);
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("in.hobnob.prefs", Context.MODE_PRIVATE);
-        intervalInMinutes = sharedPreferences.getInt("repeatDelayInMinutes", 15);
+        repeatDelayInMinutes = sharedPreferences.getInt("repeatDelayInMinutes", 15);
      
         alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
             SystemClock.elapsedRealtime(),
@@ -102,9 +102,6 @@ public class HobnobGeolocation extends CordovaPlugin {
     }
 
     protected void startTracking() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("com.websmithing.gpstracker.prefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
         if (!checkIfGooglePlayEnabled()) {
             return;
         }
