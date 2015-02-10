@@ -49,7 +49,7 @@ public class HobnobGeolocation extends CordovaPlugin {
             return true;
         }
 
-        if (action.equals('stop')) {
+        if (action.equals("stop")) {
 
             // Set currentlyTracking to false
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -61,7 +61,7 @@ public class HobnobGeolocation extends CordovaPlugin {
             return true;
         }
 
-        if (action.equals('isTracking')) {
+        if (action.equals("isTracking")) {
             callbackContext.success(currentlyTracking);
         }
         return false;
