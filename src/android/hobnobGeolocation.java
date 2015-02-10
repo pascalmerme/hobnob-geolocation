@@ -24,10 +24,17 @@ import java.util.UUID;
  * This class echoes a string called from JavaScript.
  */
 public class HobnobGeolocation extends CordovaPlugin {
+
+    private boolean currentlyTracking;
+    private String userId;
+    private int repeatDelayInMinutes;
+    private String defaultUploadWebsite;
+
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         
-        SharedPreferences sharedPreferences = this.getSharedPreferences("in.hobnob.prefs", Context.MODE_PRIVATE);
+        Context context = cordova.getActivity();
+        SharedPreferences sharedPreferences = context.getSharedPreferences("in.hobnob.prefs", Context.MODE_PRIVATE);
         currentlyTracking = sharedPreferences.getBoolean("currentlyTracking", false);
 
         userId = args.getString(0);
@@ -74,7 +81,7 @@ public class HobnobGeolocation extends CordovaPlugin {
         gpsTrackerIntent = new Intent(context, GpsTrackerAlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(context, 0, gpsTrackerIntent, 0);
 
-        SharedPreferences sharedPreferences = this.getSharedPreferences("in.hobnob.prefs", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("in.hobnob.prefs", Context.MODE_PRIVATE);
         intervalInMinutes = sharedPreferences.getInt("repeatDelayInMinutes", 15);
      
         alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
@@ -94,7 +101,7 @@ public class HobnobGeolocation extends CordovaPlugin {
     }
 
     protected void startTracking() {
-        SharedPreferences sharedPreferences = this.getSharedPreferences("com.websmithing.gpstracker.prefs", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("com.websmithing.gpstracker.prefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         if (!checkIfGooglePlayEnabled()) {
