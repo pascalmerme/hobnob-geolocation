@@ -43,8 +43,6 @@ public class LocationService extends Service implements
     @Override
     public void onCreate() {
         super.onCreate();
-
-        defaultUploadWebsite = getString(R.string.default_upload_website);
     }
 
     @Override

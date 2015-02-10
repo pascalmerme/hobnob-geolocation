@@ -27,6 +27,9 @@ public class HobnobGeolocation extends CordovaPlugin {
     private String userId;
     private int repeatDelayInMinutes;
     private String defaultUploadWebsite;
+    private AlarmManager alarmManager;
+    private Intent gpsTrackerIntent;
+    private PendingIntent pendingIntent;
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -74,7 +77,7 @@ public class HobnobGeolocation extends CordovaPlugin {
 
     private void startAlarmManager() {
         Log.d(TAG, "startAlarmManager");
-        Context context = getBaseContext();
+        Context context = this.cordova.getActivity(); 
         alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         gpsTrackerIntent = new Intent(context, GpsTrackerAlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(context, 0, gpsTrackerIntent, 0);
@@ -91,7 +94,7 @@ public class HobnobGeolocation extends CordovaPlugin {
     private void cancelAlarmManager() {
         Log.d(TAG, "cancelAlarmManager");
 
-        Context context = getBaseContext();
+        Context context = this.cordova.getActivity(); 
         Intent gpsTrackerIntent = new Intent(context, GpsTrackerAlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, gpsTrackerIntent, 0);
         AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
@@ -114,7 +117,8 @@ public class HobnobGeolocation extends CordovaPlugin {
     }
 
     private boolean checkIfGooglePlayEnabled() {
-        if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
+        Context context = this.cordova.getActivity(); 
+        if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS) {
             return true;
         } else {
             Log.e(TAG, "unable to connect to google play services.");

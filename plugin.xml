@@ -51,7 +51,8 @@
         <source-file src="src/android/HobnobGeolocation.java" target-dir="src/in/hobnob" />
         <source-file src="src/android/GpsTrackerAlarmReceiver.java" target-dir="src/in/hobnob" />
         <source-file src="src/android/GpsTrackerBootReceiver.java" target-dir="src/in/hobnob" /> 
-        <source-file src="src/android/LocationService.java" target-dir="src/in/hobnob" />
+        <source-file src="src/android/LocationService.java" target-dir="src/in/hobnob" /> 
+        <source-file src="src/android/LoopjHttpClient.java" target-dir="src/in/hobnob" />
         <source-file src="src/android/libs/android-async-http-1.4.6.jar" target-dir="libs" />
     </platform>
 </plugin>
