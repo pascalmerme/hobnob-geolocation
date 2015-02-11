@@ -26,7 +26,7 @@ import java.util.Date;
 import java.util.TimeZone;
 import org.json.JSONObject;
 import org.apache.http.HttpEntity;
-import org.apache.http.entity.AbstractHttpEntity;
+import org.apache.http.entity.ByteArrayEntity;
 
 
 public class LocationService extends Service implements

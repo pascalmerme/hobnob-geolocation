@@ -12,6 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Locale;
+import org.apache.http.HttpEntity;
 
 public class LoopjHttpClient {
     private static AsyncHttpClient client = new AsyncHttpClient();
