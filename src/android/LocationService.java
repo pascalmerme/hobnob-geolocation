@@ -91,6 +91,8 @@ public class LocationService extends Service implements
     }
 
     protected void sendLocationDataToWebsite(Location location) {
+        Log.e(TAG, "send location data to website");
+
         // formatted for mysql datetime format
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         dateFormat.setTimeZone(TimeZone.getDefault());
@@ -117,6 +119,8 @@ public class LocationService extends Service implements
         editor.putFloat("previousLongitude", (float)location.getLongitude());
         editor.apply();
 
+        Log.e(TAG, "distance : " + String.valueOf(distanceSinceLastLocation));
+
         if (distanceSinceLastLocation > 100f) {
             final RequestParams requestParams = new RequestParams();
             requestParams.put("latitude", Double.toString(location.getLatitude()));
@@ -131,14 +135,17 @@ public class LocationService extends Service implements
 
             final String uploadWebsite = sharedPreferences.getString("defaultUploadWebsite", defaultUploadWebsite);
 
+            Log.e(TAG, "will send to server");
             LoopjHttpClient.post(uploadWebsite, requestParams, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, org.apache.http.Header[] headers, byte[] responseBody) {
+                    Log.e(TAG, "success sending");
                     LoopjHttpClient.debugLoopJ(TAG, "sendLocationDataToWebsite - success", uploadWebsite, requestParams, responseBody, headers, statusCode, null);
                     stopSelf();
                 }
                 @Override
                 public void onFailure(int statusCode, org.apache.http.Header[] headers, byte[] errorResponse, Throwable e) {
+                    Log.e(TAG, "error sending");
                     LoopjHttpClient.debugLoopJ(TAG, "sendLocationDataToWebsite - failure", uploadWebsite, requestParams, errorResponse, headers, statusCode, e);
                     stopSelf();
                 }
@@ -166,6 +173,7 @@ public class LocationService extends Service implements
             if (location.getAccuracy() < 100.0f) {
                 stopLocationUpdates();
                 sendLocationDataToWebsite(location);
+                currentlyProcessingLocation = true;
             }
         }
     }
