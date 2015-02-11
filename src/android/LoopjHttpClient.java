@@ -1,10 +1,10 @@
 package in.hobnob;
 
 import android.util.Log;
+import android.content.Context;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
 
@@ -12,17 +12,13 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Locale;
-import org.apache.http.HttpEntity;
+import org.apache.http.StringEntity;
 
 public class LoopjHttpClient {
     private static AsyncHttpClient client = new AsyncHttpClient();
 
-    public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        client.get(url, params, responseHandler);
-    }
-
-    public static void post(String url, HttpEntity entity, AsyncHttpResponseHandler responseHandler) {
-        client.post(url, entity, "application/json", responseHandler);
+    public static void post(Context context, String url, HttpEntity entity, AsyncHttpResponseHandler responseHandler) {
+        client.post(context, url, entity, "application/json", responseHandler);
     }
 
     public static void debugLoopJ(String TAG, String methodName,String url, byte[] response, Header[] headers, int statusCode, Throwable t) {

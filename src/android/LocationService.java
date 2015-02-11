@@ -25,8 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 import org.json.JSONObject;
-import org.apache.http.HttpEntity;
-import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.StringEntity;
 
 
 public class LocationService extends Service implements
@@ -144,10 +143,10 @@ public class LocationService extends Service implements
 
             final String uploadWebsite = sharedPreferences.getString("defaultUploadWebsite", defaultUploadWebsite);
 
-            ByteArrayEntity entity = new ByteArrayEntity(requestParams.getBytes("UTF-8"));
-
-
-            LoopjHttpClient.post(uploadWebsite, entity, new AsyncHttpResponseHandler() {
+            StringEntity entity = new StringEntity(requestParams.toString());
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+            
+            LoopjHttpClient.post(this, uploadWebsite, entity, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, org.apache.http.Header[] headers, byte[] responseBody) {
                     Log.e(TAG, "success sending");
