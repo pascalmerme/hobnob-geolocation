@@ -148,8 +148,16 @@ public class LocationService extends Service implements
 
                 final String uploadWebsite = sharedPreferences.getString("defaultUploadWebsite", defaultUploadWebsite);
 
-                StringEntity entity = new StringEntity(requestParams.toString());
-                entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+                try {
+                    StringEntity entity = new StringEntity(requestParams.toString());
+                    entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+                } catch (IllegalArgumentException e) {
+                    Log.d("HTTP", "StringEntity: IllegalArgumentException");
+                    return;
+                } catch (UnsupportedEncodingException e) {
+                    Log.d("HTTP", "StringEntity: UnsupportedEncodingException");
+                    return;
+                }
                 
                 LoopjHttpClient.post(this, uploadWebsite, entity, new AsyncHttpResponseHandler() {
                     @Override
