@@ -128,10 +128,10 @@ public class LocationService extends Service implements
         if (distanceSinceLastLocation > minimumDistance) {
             final RequestParams requestParams = new RequestParams();
 
-            Map<String, String> location = new HashMap<String, String>();
-            location.put("latitude", Double.toString(location.getLatitude()));
-            location.put("longitude", Double.toString(location.getLongitude()));
-            requestParams.put("location", location);
+            Map<String, String> paramsLocation = new HashMap<String, String>();
+            paramsLocation.put("latitude", Double.toString(location.getLatitude()));
+            paramsLocation.put("longitude", Double.toString(location.getLongitude()));
+            requestParams.put("location", paramsLocation);
 
             try {
                 requestParams.put("date", URLEncoder.encode(dateFormat.format(date), "UTF-8"));
