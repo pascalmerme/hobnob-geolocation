@@ -27,6 +27,7 @@ import java.util.TimeZone;
 import org.json.JSONObject;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HTTP;
 
 public class LocationService extends Service implements
         GooglePlayServicesClient.ConnectionCallbacks,
