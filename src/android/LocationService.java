@@ -29,6 +29,9 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
+import java.lang.IllegalArgumentException;
+import java.io.UnsupportedEncodingException;
+
 
 public class LocationService extends Service implements
         GooglePlayServicesClient.ConnectionCallbacks,
