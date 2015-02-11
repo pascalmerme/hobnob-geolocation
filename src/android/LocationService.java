@@ -28,6 +28,7 @@ import org.json.JSONObject;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
+import org.json.JSONException;
 
 public class LocationService extends Service implements
         GooglePlayServicesClient.ConnectionCallbacks,
