@@ -143,7 +143,7 @@ public class LocationService extends Service implements
             final String uploadWebsite = sharedPreferences.getString("defaultUploadWebsite", defaultUploadWebsite);
 
             Log.e(TAG, "will send to server");
-            LoopjHttpClient.get(uploadWebsite, requestParams, new AsyncHttpResponseHandler() {
+            LoopjHttpClient.post(uploadWebsite, requestParams, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, org.apache.http.Header[] headers, byte[] responseBody) {
                     Log.e(TAG, "success sending");
