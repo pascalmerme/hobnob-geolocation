@@ -128,39 +128,45 @@ public class LocationService extends Service implements
         float minimumDistance = sharedPreferences.getFloat("minimumDistance", 0f);
 
         if (distanceSinceLastLocation > minimumDistance) {
-            JSONObject locationParams = new JSONObject();
-            JSONObject requestParams = new JSONObject();
 
-            locationParams.put("latitude", Double.toString(location.getLatitude()));
-            locationParams.put("longitude", Double.toString(location.getLongitude()));
-            requestParams.put("location", locationParams);
 
             try {
-                requestParams.put("date", URLEncoder.encode(dateFormat.format(date), "UTF-8"));
-            } catch (UnsupportedEncodingException e) {}
+                JSONObject locationParams = new JSONObject();
+                JSONObject requestParams = new JSONObject();
 
-            requestParams.put("locationmethod", location.getProvider());
-            requestParams.put("userId", sharedPreferences.getString("userId", ""));
+                locationParams.put("latitude", Double.toString(location.getLatitude()));
+                locationParams.put("longitude", Double.toString(location.getLongitude()));
+                requestParams.put("location", locationParams);
 
-            final String uploadWebsite = sharedPreferences.getString("defaultUploadWebsite", defaultUploadWebsite);
+                try {
+                    requestParams.put("date", URLEncoder.encode(dateFormat.format(date), "UTF-8"));
+                } catch (UnsupportedEncodingException e) {}
 
-            StringEntity entity = new StringEntity(requestParams.toString());
-            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-            
-            LoopjHttpClient.post(this, uploadWebsite, entity, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, org.apache.http.Header[] headers, byte[] responseBody) {
-                    Log.e(TAG, "success sending");
-                    LoopjHttpClient.debugLoopJ(TAG, "sendLocationDataToWebsite - success", uploadWebsite, responseBody, headers, statusCode, null);
-                    stopSelf();
-                }
-                @Override
-                public void onFailure(int statusCode, org.apache.http.Header[] headers, byte[] errorResponse, Throwable e) {
-                    Log.e(TAG, "error sending");
-                    LoopjHttpClient.debugLoopJ(TAG, "sendLocationDataToWebsite - failure", uploadWebsite, errorResponse, headers, statusCode, e);
-                    stopSelf();
-                }
-            });
+                requestParams.put("locationmethod", location.getProvider());
+                requestParams.put("userId", sharedPreferences.getString("userId", ""));
+
+                final String uploadWebsite = sharedPreferences.getString("defaultUploadWebsite", defaultUploadWebsite);
+
+                StringEntity entity = new StringEntity(requestParams.toString());
+                entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+                
+                LoopjHttpClient.post(this, uploadWebsite, entity, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, org.apache.http.Header[] headers, byte[] responseBody) {
+                        Log.e(TAG, "success sending");
+                        LoopjHttpClient.debugLoopJ(TAG, "sendLocationDataToWebsite - success", uploadWebsite, responseBody, headers, statusCode, null);
+                        stopSelf();
+                    }
+                    @Override
+                    public void onFailure(int statusCode, org.apache.http.Header[] headers, byte[] errorResponse, Throwable e) {
+                        Log.e(TAG, "error sending");
+                        LoopjHttpClient.debugLoopJ(TAG, "sendLocationDataToWebsite - failure", uploadWebsite, errorResponse, headers, statusCode, e);
+                        stopSelf();
+                    }
+                });
+            } catch (JSONException e) {
+                Log.e(TAG, "Error while sending location to server");
+            }  
         }
     }
 
