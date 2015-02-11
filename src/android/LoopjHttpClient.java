@@ -24,10 +24,7 @@ public class LoopjHttpClient {
         client.post(url, entity, "application/json", responseHandler);
     }
 
-    public static void debugLoopJ(String TAG, String methodName,String url, RequestParams requestParams, byte[] response, Header[] headers, int statusCode, Throwable t) {
-
-        Log.d(TAG, client.getUrlWithQueryString(false, url, requestParams));
-
+    public static void debugLoopJ(String TAG, String methodName,String url, byte[] response, Header[] headers, int statusCode, Throwable t) {
         if (headers != null) {
             Log.e(TAG, methodName);
             Log.d(TAG, "Return Headers:");

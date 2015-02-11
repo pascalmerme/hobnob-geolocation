@@ -25,6 +25,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 import org.json.JSONObject;
+import org.apache.http.HttpEntity;
+import org.apache.http.entity.AbstractHttpEntity;
+
 
 public class LocationService extends Service implements
         GooglePlayServicesClient.ConnectionCallbacks,
@@ -148,13 +151,13 @@ public class LocationService extends Service implements
                 @Override
                 public void onSuccess(int statusCode, org.apache.http.Header[] headers, byte[] responseBody) {
                     Log.e(TAG, "success sending");
-                    LoopjHttpClient.debugLoopJ(TAG, "sendLocationDataToWebsite - success", uploadWebsite, requestParams, responseBody, headers, statusCode, null);
+                    LoopjHttpClient.debugLoopJ(TAG, "sendLocationDataToWebsite - success", uploadWebsite, responseBody, headers, statusCode, null);
                     stopSelf();
                 }
                 @Override
                 public void onFailure(int statusCode, org.apache.http.Header[] headers, byte[] errorResponse, Throwable e) {
                     Log.e(TAG, "error sending");
-                    LoopjHttpClient.debugLoopJ(TAG, "sendLocationDataToWebsite - failure", uploadWebsite, requestParams, errorResponse, headers, statusCode, e);
+                    LoopjHttpClient.debugLoopJ(TAG, "sendLocationDataToWebsite - failure", uploadWebsite, errorResponse, headers, statusCode, e);
                     stopSelf();
                 }
             });
