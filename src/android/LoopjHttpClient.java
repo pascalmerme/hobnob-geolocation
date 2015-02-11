@@ -17,7 +17,7 @@ import org.apache.http.StringEntity;
 public class LoopjHttpClient {
     private static AsyncHttpClient client = new AsyncHttpClient();
 
-    public static void post(Context context, String url, HttpEntity entity, AsyncHttpResponseHandler responseHandler) {
+    public static void post(Context context, String url, StringEntity entity, AsyncHttpResponseHandler responseHandler) {
         client.post(context, url, entity, "application/json", responseHandler);
     }
 
