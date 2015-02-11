@@ -121,7 +121,9 @@ public class LocationService extends Service implements
 
         Log.e(TAG, "distance : " + String.valueOf(distanceSinceLastLocation));
 
-        if (distanceSinceLastLocation > 100f) {
+        float minimumDistance = sharedPreferences.getBFloat("minimumDistance", 0f);
+
+        if (distanceSinceLastLocation > minimumDistance) {
             final RequestParams requestParams = new RequestParams();
             requestParams.put("latitude", Double.toString(location.getLatitude()));
             requestParams.put("longitude", Double.toString(location.getLongitude()));

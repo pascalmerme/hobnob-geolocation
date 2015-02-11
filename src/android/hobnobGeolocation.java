@@ -27,6 +27,7 @@ public class HobnobGeolocation extends CordovaPlugin {
     private String userId;
     private int repeatDelayInMinutes;
     private String defaultUploadWebsite;
+    private float minimumDistance;
     private AlarmManager alarmManager;
     private Intent gpsTrackerIntent;
     private PendingIntent pendingIntent;
@@ -34,7 +35,7 @@ public class HobnobGeolocation extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 
-        Context context = cordova.getActivity();
+        Context context = cordova.getActivity().getApplicationContext();
         SharedPreferences sharedPreferences = context.getSharedPreferences("in.hobnob.prefs", Context.MODE_PRIVATE);
         currentlyTracking = sharedPreferences.getBoolean("currentlyTracking", false);
 
@@ -50,6 +51,7 @@ public class HobnobGeolocation extends CordovaPlugin {
             editor.putInt("repeatDelayInMinutes", repeatDelayInMinutes);
             editor.putString("userId", userId);
             editor.putString("defaultUploadWebsite", defaultUploadWebsite);
+            editor.putFloat("minimumDistance", minimumDistance);
             editor.apply();
 
             startTracking();
@@ -77,7 +79,7 @@ public class HobnobGeolocation extends CordovaPlugin {
 
     private void startAlarmManager() {
         Log.d(TAG, "startAlarmManager");
-        Context context = this.cordova.getActivity(); 
+        Context context = this.cordova.getActivity().getApplicationContext(); 
         alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         gpsTrackerIntent = new Intent(context, GpsTrackerAlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(context, 0, gpsTrackerIntent, 0);
@@ -87,7 +89,7 @@ public class HobnobGeolocation extends CordovaPlugin {
         Log.d(TAG, "preferences");
         Log.d(TAG, String.valueOf(repeatDelayInMinutes));
         alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-            SystemClock.elapsedRealtime(),
+            SystemClock.elapsedRealtime()   ,
             repeatDelayInMinutes * 60 * 1000,
             pendingIntent);
     }
