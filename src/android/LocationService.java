@@ -24,8 +24,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
-import java.util.Map;
-import java.util.HashMap;
+import org.json.JSONObject
 
 public class LocationService extends Service implements
         GooglePlayServicesClient.ConnectionCallbacks,
@@ -126,12 +125,12 @@ public class LocationService extends Service implements
         float minimumDistance = sharedPreferences.getFloat("minimumDistance", 0f);
 
         if (distanceSinceLastLocation > minimumDistance) {
-            final RequestParams requestParams = new RequestParams();
+            JSONObject locationParams = new JSONObject();
+            JSONObject requestParams = new JSONObject();
 
-            Map<String, String> paramsLocation = new HashMap<String, String>();
-            paramsLocation.put("latitude", Double.toString(location.getLatitude()));
-            paramsLocation.put("longitude", Double.toString(location.getLongitude()));
-            requestParams.put("location", paramsLocation);
+            locationParams.put("latitude", Double.toString(location.getLatitude()));
+            locationParams.put("longitude", Double.toString(location.getLongitude()));
+            requestParams.put("location", locationParams);
 
             try {
                 requestParams.put("date", URLEncoder.encode(dateFormat.format(date), "UTF-8"));
@@ -142,8 +141,10 @@ public class LocationService extends Service implements
 
             final String uploadWebsite = sharedPreferences.getString("defaultUploadWebsite", defaultUploadWebsite);
 
-            Log.e(TAG, "will send to server");
-            LoopjHttpClient.post(uploadWebsite, requestParams, new AsyncHttpResponseHandler() {
+            ByteArrayEntity entity = new ByteArrayEntity(requestParams.getBytes("UTF-8"));
+
+
+            LoopjHttpClient.post(uploadWebsite, entity, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, org.apache.http.Header[] headers, byte[] responseBody) {
                     Log.e(TAG, "success sending");

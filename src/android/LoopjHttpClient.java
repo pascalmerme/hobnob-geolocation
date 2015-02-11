@@ -20,8 +20,8 @@ public class LoopjHttpClient {
         client.get(url, params, responseHandler);
     }
 
-    public static void post(String url, RequestParams requestParams, AsyncHttpResponseHandler responseHandler) {
-        client.post(url, requestParams, responseHandler);
+    public static void post(String url, HttpEntity entity, AsyncHttpResponseHandler responseHandler) {
+        client.post(url, entity, "application/json", responseHandler);
     }
 
     public static void debugLoopJ(String TAG, String methodName,String url, RequestParams requestParams, byte[] response, Header[] headers, int statusCode, Throwable t) {
