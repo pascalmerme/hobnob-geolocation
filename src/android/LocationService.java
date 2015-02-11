@@ -154,6 +154,21 @@ public class LocationService extends Service implements
                 try {
                     StringEntity entity = new StringEntity(requestParams.toString());
                     entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+                
+                    LoopjHttpClient.post(this, uploadWebsite, entity, new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, org.apache.http.Header[] headers, byte[] responseBody) {
+                            Log.e(TAG, "success sending");
+                            LoopjHttpClient.debugLoopJ(TAG, "sendLocationDataToWebsite - success", uploadWebsite, responseBody, headers, statusCode, null);
+                            stopSelf();
+                        }
+                        @Override
+                        public void onFailure(int statusCode, org.apache.http.Header[] headers, byte[] errorResponse, Throwable e) {
+                            Log.e(TAG, "error sending");
+                            LoopjHttpClient.debugLoopJ(TAG, "sendLocationDataToWebsite - failure", uploadWebsite, errorResponse, headers, statusCode, e);
+                            stopSelf();
+                        }
+                    });
                 } catch (IllegalArgumentException e) {
                     Log.d("HTTP", "StringEntity: IllegalArgumentException");
                     return;
@@ -161,21 +176,6 @@ public class LocationService extends Service implements
                     Log.d("HTTP", "StringEntity: UnsupportedEncodingException");
                     return;
                 }
-                
-                LoopjHttpClient.post(this, uploadWebsite, entity, new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, org.apache.http.Header[] headers, byte[] responseBody) {
-                        Log.e(TAG, "success sending");
-                        LoopjHttpClient.debugLoopJ(TAG, "sendLocationDataToWebsite - success", uploadWebsite, responseBody, headers, statusCode, null);
-                        stopSelf();
-                    }
-                    @Override
-                    public void onFailure(int statusCode, org.apache.http.Header[] headers, byte[] errorResponse, Throwable e) {
-                        Log.e(TAG, "error sending");
-                        LoopjHttpClient.debugLoopJ(TAG, "sendLocationDataToWebsite - failure", uploadWebsite, errorResponse, headers, statusCode, e);
-                        stopSelf();
-                    }
-                });
             } catch (JSONException e) {
                 Log.e(TAG, "Error while sending location to server");
             }  
