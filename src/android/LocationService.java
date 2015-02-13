@@ -91,7 +91,7 @@ public class LocationService extends Service implements
         Log.d(TAG, "onConnected");
 
         SharedPreferences sharedPreferences = this.getSharedPreferences("in.hobnob.prefs", Context.MODE_PRIVATE);
-        repeatDelayInMinutes = sharedPreferences.getInt("repeatDelayInMinutes", 15);
+        int repeatDelayInMinutes = sharedPreferences.getInt("repeatDelayInMinutes", 15);
 
         locationRequest = LocationRequest.create();
         locationRequest.setInterval(1000 * 60 * repeatDelayInMinutes);
