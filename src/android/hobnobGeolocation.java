@@ -82,12 +82,11 @@ public class HobnobGeolocation extends CordovaPlugin {
         Context context = this.cordova.getActivity().getApplicationContext(); 
         alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         gpsTrackerIntent = new Intent(context, GpsTrackerAlarmReceiver.class);
+
         pendingIntent = PendingIntent.getBroadcast(context, 0, gpsTrackerIntent, 0);
-        Log.d(TAG, "will fetch preferences");
         SharedPreferences sharedPreferences = context.getSharedPreferences("in.hobnob.prefs", Context.MODE_PRIVATE);
         repeatDelayInMinutes = sharedPreferences.getInt("repeatDelayInMinutes", 15);
-        Log.d(TAG, "preferences");
-        Log.d(TAG, String.valueOf(repeatDelayInMinutes));
+
         alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
             SystemClock.elapsedRealtime()   ,
             repeatDelayInMinutes * 60 * 1000,

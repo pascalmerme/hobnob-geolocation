@@ -57,4 +57,27 @@
         <source-file src="src/android/LoopjHttpClient.java" target-dir="src/in/hobnob" />
         <source-file src="src/android/libs/android-async-http-1.4.6.jar" target-dir="libs" />
     </platform>
+
+    <platform name="ios">
+        <!-- required background modes:  App registers for location updates -->
+        
+        <config-file target="*-Info.plist" parent="NSLocationAlwaysUsageDescription">
+            <string>This app requires background location tracking</string>
+        </config-file>
+
+        <config-file target="*-Info.plist" parent="UIBackgroundModes">
+            <array>
+                <string>location</string>
+            </array>
+        </config-file>
+
+        <config-file target="config.xml" parent="/*">
+            <feature name="BackgroundGeoLocation">
+                <param name="ios-package" value="CDVBackgroundGeoLocation"/>
+            </feature>
+        </config-file>
+        <framework src="AVFoundation.framework" weak="true" />
+        <source-file src="src/ios/CDVBackgroundGeoLocation.m" />
+        <header-file src="src/ios/CDVBackgroundGeoLocation.h" />
+    </platform>    
 </plugin>

@@ -90,10 +90,14 @@ public class LocationService extends Service implements
     public void onConnected(Bundle bundle) {
         Log.d(TAG, "onConnected");
 
+        SharedPreferences sharedPreferences = this.getSharedPreferences("in.hobnob.prefs", Context.MODE_PRIVATE);
+        repeatDelayInMinutes = sharedPreferences.getInt("repeatDelayInMinutes", 15);
+
         locationRequest = LocationRequest.create();
-        locationRequest.setInterval(1000); // milliseconds
-        locationRequest.setFastestInterval(1000); // the fastest rate in milliseconds at which your app can handle location updates
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(1000 * 60 * repeatDelayInMinutes);
+        locationRequest.setFastestInterval(1000 * 60 * 5); // 5 minutes
+        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        locationRequest.setExpirationDuration(1000 * 60 * 6);
 
         locationClient.requestLocationUpdates(locationRequest, this);
     }
@@ -132,8 +136,6 @@ public class LocationService extends Service implements
         float minimumDistance = sharedPreferences.getFloat("minimumDistance", 0f);
 
         if (distanceSinceLastLocation > minimumDistance) {
-
-
             try {
                 JSONObject locationParams = new JSONObject();
                 JSONObject requestParams = new JSONObject();
@@ -184,6 +186,7 @@ public class LocationService extends Service implements
 
     @Override
     public void onDestroy() {
+        stopLocationUpdates();
         super.onDestroy();
     }
 
@@ -197,12 +200,12 @@ public class LocationService extends Service implements
         if (location != null) {
             Log.e(TAG, "position: " + location.getLatitude() + ", " + location.getLongitude() + " accuracy: " + location.getAccuracy());
 
-            // we have our desired accuracy of 500 meters so lets quit this service,
-            // onDestroy will be called and stop our location uodates
-            if (location.getAccuracy() < 100.0f) {
+            if (location.getAccuracy() < 300.0f) {
                 stopLocationUpdates();
                 sendLocationDataToWebsite(location);
                 currentlyProcessingLocation = true;
+            } else {
+                stopLocationUpdates();
             }
         }
     }
